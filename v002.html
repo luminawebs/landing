@@ -6,16 +6,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificado de Manipulación de Alimentos - Resolución 2674 de 2013</title>
 
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet">
+    </noscript>
 
-    <link rel="stylesheet" href="/manipulacion-de-alimentos/style.css">
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --text-primary: #0f172a;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    <script type="text/javascript">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-white);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .site-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero h2 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .btn-edu {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 2rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-success {
+            background: #25d366;
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+    </style>
+    <link rel="preload" href="/manipulacion-de-alimentos/style.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="/manipulacion-de-alimentos/style.css">
+    </noscript>
+
+    <script type="text/javascript" defer>
         (function (c, l, a, r, i, t, y) {
             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
             t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
@@ -24,13 +132,13 @@
     </script>
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17782867350"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17782867350" defer></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', 'AW-17782867350');
+        gtag('config', 'AW-17782867350', { 'page_path': window.location.pathname });
     </script>
 </head>
 
@@ -39,10 +147,18 @@
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo-link">
-                    <img src="/manipulacion-de-alimentos/imgs/edunest-blue-sm.png" alt="Edunest - Educación Profesional"
-                        class="logo-img">
+                    <img src="/manipulacion-de-alimentos/imgs/edunest-blue-sm.webp"
+                        alt="Edunest - Educación Profesional" class="logo-img" width="150" height="40">
                 </a>
                 <div class="header-cta-desktop">
+                    <a href="https://wa.me/573001234567?text=¡Hola!%20Necesito%20el%20curso%20de%20manipulación"
+                        class="btn-edu btn-outline">Consultar Precio 💬</a>
+                    <a class="cta-btn primary"
+                        href="https://wa.me/573247206164?text=Hola%20Edunest!%20Vengo%20del%20Hero.%20Quiero%20mi%20certificado%20de%20$25k.">
+                        🚀 Obtener Certificado Ya
+                    </a>
+                </div>
+                <div class="header-cta-mobile">
                     <a href="https://wa.me/573001234567?text=¡Hola!%20Necesito%20el%20curso%20de%20manipulación"
                         class="btn-edu btn-outline">Consultar Precio 💬</a>
                 </div>
@@ -67,7 +183,8 @@
 
                         <div style="position:relative; margin-bottom: -8px;"><iframe
                                 src="https://iframe.mediadelivery.net/embed/354319/e3869d3d-9505-4a52-91f9-fbf8c1757ef6?autoplay=false&loop=false&muted=true&preload=true&responsive=true"
-                                loading="lazy" style="border:0;top:0;height:437px;width:100%;"
+                                loading="lazy" title="Video de Manipulacion de Alimentos"
+                                style="border:0;top:0;height:437px;width:100%;"
                                 allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
                                 allowfullscreen="true"></iframe></div>
 
@@ -77,6 +194,7 @@
                         <a class="btn-edu btn-success whatsapp-btn"
                             href="https://wa.me/573001234567?text=¡Hola!%20Necesito%20el%20curso%20de%20manipulación"
                             target="_blank" rel="noopener">📱 Solicitar por WhatsApp ahora</a>
+
                         <div class="hero-trust-indicators">
                             <span>✅ Entrega Inmediata</span>
                             <span>✅ 100% Legal</span>
@@ -94,10 +212,11 @@
                 <div class="clients-logos">
                     <div class="client-logo-item">
                         <img src="/manipulacion-de-alimentos/imgs/farmatizate.webp" alt="Farmatizate"
-                            class="client-logo-img">
+                            class="client-logo-img" width="120" height="40" loading="lazy">
                     </div>
                     <div class="client-logo-item">
-                        <img src="/manipulacion-de-alimentos/imgs/tfq.png" alt="TFQ" class="client-logo-img">
+                        <img src="/manipulacion-de-alimentos/imgs/tfq.webp" alt="TFQ" class="client-logo-img" width="80"
+                            height="40" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -280,7 +399,8 @@
 
     <!-- Floating WhatsApp CTA -->
     <a href="https://wa.me/573001234567" class="whatsapp-float" target="_blank" rel="noopener">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="24"
+            height="24" loading="lazy">
         <span class="float-text">¿Dudas? Escríbenos</span>
     </a>
 

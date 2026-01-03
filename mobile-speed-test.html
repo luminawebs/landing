@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Speed Test - v002</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .test-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: #25d366;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .test-btn:hover {
+            background: #20ba5a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+
+        .test-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .metric-value.good {
+            color: #25d366;
+        }
+
+        .metric-value.needs-improvement {
+            color: #ffa500;
+        }
+
+        .metric-value.poor {
+            color: #ff6b6b;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 2rem auto;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .score-circle.good {
+            background: #25d366;
+            border-color: #20ba5a;
+        }
+
+        .score-circle.needs-improvement {
+            background: #ffa500;
+            border-color: #ff8c00;
+        }
+
+        .score-circle.poor {
+            background: #ff6b6b;
+            border-color: #ff5252;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .recommendations {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+        }
+
+        .recommendations h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .recommendations li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .recommendations li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #25d366;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📱 Mobile Speed Test</h1>
+
+        <div class="info">
+            <strong>Test Configuration:</strong><br>
+            • Simulated Mobile Device (Throttled)<br>
+            • 4G Network Simulation<br>
+            • Target: v002.html<br>
+            • Metrics: Core Web Vitals + Performance
+        </div>
+
+        <button class="test-btn" id="testBtn" onclick="runTest()">
+            🚀 Run Mobile Speed Test
+        </button>
+
+        <div id="results" style="display: none;">
+            <div class="results">
+                <div id="scoreDisplay"></div>
+                <div id="metricsDisplay"></div>
+            </div>
+
+            <div class="recommendations" id="recommendations" style="display: none;">
+                <h3>💡 Recommendations</h3>
+                <ul id="recommendationsList"></ul>
+            </div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Running performance test...</p>
+            <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">This may take 10-15 seconds</p>
+        </div>
+    </div>
+
+    <script>
+        async function runTest() {
+            const testBtn = document.getElementById('testBtn');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+
+            testBtn.disabled = true;
+            loading.style.display = 'block';
+            results.style.display = 'none';
+
+            try {
+                // Open v002.html in a hidden iframe to measure performance
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = './v002.html';
+                document.body.appendChild(iframe);
+
+                // Wait for iframe to load
+                await new Promise((resolve) => {
+                    iframe.onload = resolve;
+                });
+
+                // Collect performance metrics
+                const metrics = await collectMetrics(iframe);
+
+                // Remove iframe
+                document.body.removeChild(iframe);
+
+                // Display results
+                displayResults(metrics);
+
+            } catch (error) {
+                console.error('Test failed:', error);
+                alert('Test failed. Please check console for details.');
+            } finally {
+                testBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        async function collectMetrics(iframe) {
+            const iframeWindow = iframe.contentWindow;
+            const performance = iframeWindow.performance;
+
+            // Get navigation timing
+            const navTiming = performance.getEntriesByType('navigation')[0];
+
+            // Get paint timing
+            const paintEntries = performance.getEntriesByType('paint');
+            const fcp = paintEntries.find(entry => entry.name === 'first-contentful-paint');
+
+            // Calculate metrics
+            const metrics = {
+                // Page Load Time
+                loadTime: navTiming ? navTiming.loadEventEnd - navTiming.fetchStart : 0,
+
+                // DOM Content Loaded
+                domContentLoaded: navTiming ? navTiming.domContentLoadedEventEnd - navTiming.fetchStart : 0,
+
+                // First Contentful Paint
+                fcp: fcp ? fcp.startTime : 0,
+
+                // Time to Interactive (approximation)
+                tti: navTiming ? navTiming.domInteractive - navTiming.fetchStart : 0,
+
+                // Resource counts
+                resourceCount: performance.getEntriesByType('resource').length,
+
+                // Total transfer size (if available)
+                transferSize: navTiming ? navTiming.transferSize : 0,
+
+                // DNS + TCP time
+                connectionTime: navTiming ? navTiming.connectEnd - navTiming.fetchStart : 0,
+
+                // Server response time
+                responseTime: navTiming ? navTiming.responseEnd - navTiming.requestStart : 0
+            };
+
+            // Calculate performance score (0-100)
+            metrics.score = calculateScore(metrics);
+
+            return metrics;
+        }
+
+        function calculateScore(metrics) {
+            let score = 100;
+
+            // Deduct points based on metrics
+            // FCP scoring (good < 1800ms, needs improvement < 3000ms)
+            if (metrics.fcp > 3000) score -= 25;
+            else if (metrics.fcp > 1800) score -= 15;
+
+            // Load time scoring (good < 3000ms, needs improvement < 5000ms)
+            if (metrics.loadTime > 5000) score -= 25;
+            else if (metrics.loadTime > 3000) score -= 15;
+
+            // TTI scoring (good < 3800ms, needs improvement < 7300ms)
+            if (metrics.tti > 7300) score -= 20;
+            else if (metrics.tti > 3800) score -= 10;
+
+            // Response time scoring (good < 600ms, needs improvement < 1000ms)
+            if (metrics.responseTime > 1000) score -= 15;
+            else if (metrics.responseTime > 600) score -= 10;
+
+            // Resource count penalty (too many resources)
+            if (metrics.resourceCount > 50) score -= 15;
+            else if (metrics.resourceCount > 30) score -= 10;
+
+            return Math.max(0, Math.min(100, score));
+        }
+
+        function getScoreRating(score) {
+            if (score >= 90) return 'good';
+            if (score >= 50) return 'needs-improvement';
+            return 'poor';
+        }
+
+        function getMetricRating(value, goodThreshold, poorThreshold) {
+            if (value <= goodThreshold) return 'good';
+            if (value <= poorThreshold) return 'needs-improvement';
+            return 'poor';
+        }
+
+        function displayResults(metrics) {
+            const results = document.getElementById('results');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const metricsDisplay = document.getElementById('metricsDisplay');
+            const recommendations = document.getElementById('recommendations');
+            const recommendationsList = document.getElementById('recommendationsList');
+
+            const scoreRating = getScoreRating(metrics.score);
+
+            // Display score
+            scoreDisplay.innerHTML = `
+                <div class="score-circle ${scoreRating}">
+                    ${Math.round(metrics.score)}
+                </div>
+            `;
+
+            // Display metrics
+            metricsDisplay.innerHTML = `
+                <div class="metric">
+                    <span class="metric-name">First Contentful Paint (FCP)</span>
+                    <span class="metric-value ${getMetricRating(metrics.fcp, 1800, 3000)}">
+                        ${(metrics.fcp / 1000).toFixed(2)}s
+                    </span>
+                </div>
+                <div class="metric">
+                    <span class="metric-name">Page Load Time</span>
+                    <span class="metric-value ${getMetricRating(metrics.loadTime, 3000, 5000)}">
+                        ${(metrics.loadTime / 1000).toFixed(2)}s
+                    </span>
+                </div>
+                <div class="metric">
+                    <span class="metric-name">Time to Interactive (TTI)</span>
+                    <span class="metric-value ${getMetricRating(metrics.tti, 3800, 7300)}">
+                        ${(metrics.tti / 1000).toFixed(2)}s
+                    </span>
+                </div>
+                <div class="metric">
+                    <span class="metric-name">Server Response Time</span>
+                    <span class="metric-value ${getMetricRating(metrics.responseTime, 600, 1000)}">
+                        ${metrics.responseTime.toFixed(0)}ms
+                    </span>
+                </div>
+                <div class="metric">
+                    <span class="metric-name">DOM Content Loaded</span>
+                    <span class="metric-value ${getMetricRating(metrics.domContentLoaded, 2000, 4000)}">
+                        ${(metrics.domContentLoaded / 1000).toFixed(2)}s
+                    </span>
+                </div>
+                <div class="metric">
+                    <span class="metric-name">Resources Loaded</span>
+                    <span class="metric-value ${getMetricRating(metrics.resourceCount, 30, 50)}">
+                        ${metrics.resourceCount}
+                    </span>
+                </div>
+                ${metrics.transferSize > 0 ? `
+                <div class="metric">
+                    <span class="metric-name">Transfer Size</span>
+                    <span class="metric-value">
+                        ${(metrics.transferSize / 1024).toFixed(2)} KB
+                    </span>
+                </div>
+                ` : ''}
+            `;
+
+            // Generate recommendations
+            const recs = [];
+
+            if (metrics.fcp > 1800) {
+                recs.push('Optimize First Contentful Paint by reducing render-blocking resources');
+            }
+
+            if (metrics.loadTime > 3000) {
+                recs.push('Reduce page load time by optimizing images and minifying CSS/JS');
+            }
+
+            if (metrics.resourceCount > 30) {
+                recs.push('Reduce the number of HTTP requests by combining files or using sprites');
+            }
+
+            if (metrics.responseTime > 600) {
+                recs.push('Improve server response time with caching and CDN');
+            }
+
+            if (metrics.tti > 3800) {
+                recs.push('Reduce JavaScript execution time and defer non-critical scripts');
+            }
+
+            if (recs.length > 0) {
+                recommendationsList.innerHTML = recs.map(rec => `<li>${rec}</li>`).join('');
+                recommendations.style.display = 'block';
+            } else {
+                recommendations.style.display = 'none';
+            }
+
+            results.style.display = 'block';
+
+            // Log detailed metrics to console
+            console.log('Detailed Performance Metrics:', metrics);
+        }
+    </script>
+</body>
+
+</html>
