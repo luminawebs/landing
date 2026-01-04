@@ -140,6 +140,22 @@
 
         gtag('config', 'AW-17782867350', { 'page_path': window.location.pathname });
     </script>
+
+    <script>
+        function gtag_report_conversion(url) {
+            var callback = function () {
+                if (typeof (url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-17782867350/0mfaCIKii9AbEJaLxJ9C',
+                'event_callback': callback
+            });
+            return false;
+        }
+    </script>
+
 </head>
 
 <body>
@@ -151,16 +167,17 @@
                         alt="Edunest - Educación Profesional" class="logo-img" width="150" height="40">
                 </a>
                 <div class="header-cta-desktop">
-                    <a href="https://wa.me/573001234567?text=¡Hola!%20Necesito%20el%20curso%20de%20manipulación"
-                        class="btn-edu btn-outline">Consultar Precio 💬</a>
-                    <a class="cta-btn primary"
-                        href="https://wa.me/573247206164?text=Hola%20Edunest!%20Vengo%20del%20Hero.%20Quiero%20mi%20certificado%20de%20$25k.">
+                    <a href="https://wa.me/573247206164?text=Hola%20Edunest!%20Vengo%20del%20Hero.%20Quiero%20mi%20certificado%20de%20$25k."
+                        onclick="return gtag_report_conversion(this.href);">
                         🚀 Obtener Certificado Ya
                     </a>
                 </div>
                 <div class="header-cta-mobile">
-                    <a href="https://wa.me/573001234567?text=¡Hola!%20Necesito%20el%20curso%20de%20manipulación"
-                        class="btn-edu btn-outline">Consultar Precio 💬</a>
+
+                    <a href="https://wa.me/573247206164?text=Hola%20Edunest!%20Vengo%20del%20Hero.%20Quiero%20mi%20certificado%20de%20$25k."
+                        onclick="return gtag_report_conversion(this.href);">
+                        🚀 Obtener Certificado Ya
+                    </a>
                 </div>
             </div>
         </div>
@@ -193,7 +210,8 @@
                     <div class="hero-ctas">
                         <a class="btn-edu btn-success whatsapp-btn"
                             href="https://wa.me/573001234567?text=¡Hola!%20Necesito%20el%20curso%20de%20manipulación"
-                            target="_blank" rel="noopener">📱 Solicitar por WhatsApp ahora</a>
+                            target="_blank" rel="noopener" onclick="return gtag_report_conversion(this.href);">📱
+                            Solicitar por WhatsApp ahora</a>
 
                         <div class="hero-trust-indicators">
                             <span>✅ Entrega Inmediata</span>
@@ -296,7 +314,8 @@
                     <li>✅ Acceso 24/7 a la plataforma</li>
                     <li>✅ Soporte técnico personalizado</li>
                 </ul>
-                <a href="https://wa.me/573001234567?text=Quiero%20el%20plan%20individual"
+                <a onclick="return gtag_report_conversion(this.href);"
+                    href="https://wa.me/573001234567?text=Quiero%20el%20plan%20individual"
                     class="btn-edu btn-success">¡Comenzar ahora!</a>
             </div>
         </div>
@@ -391,18 +410,23 @@
             <h2>¡Evita Cierres y Multas en tu Negocio!</h2>
             <p>Únete a los más de 8,000 profesionales certificados en toda Colombia.</p>
             <div class="hero-ctas">
-                <a class="btn-edu btn-success whatsapp-btn" href="https://wa.me/573001234567">📱 Hablar con un
+                <a class="btn-edu btn-success whatsapp-btn" onclick="return gtag_report_conversion(this.href);"
+                    href="https://wa.me/573247206164?text=Hola%20Edunest!%20Le%C3%AD%20toda%20la%20info%20y%20quiero%20pagar%20mis%20$25k.">📱
+                    📱 Hablar con un
                     asesor</a>
             </div>
         </div>
     </section>
 
     <!-- Floating WhatsApp CTA -->
-    <a href="https://wa.me/573001234567" class="whatsapp-float" target="_blank" rel="noopener">
+    <a href="https://wa.me/573247206164?text=Hola%20Edunest!%20Tengo%20una%20duda%20sobre%20el%20curso."
+        onclick="return gtag_report_conversion(this.href);" class="whatsapp-float" target="_blank" rel="noopener">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="24"
             height="24" loading="lazy">
         <span class="float-text">¿Dudas? Escríbenos</span>
     </a>
+
+
 
     <script shadow>
         // Reveal on scroll
